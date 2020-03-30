@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailsActivity">
+
+    <ImageView
+        android:id="@+id/posterimage"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="90dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleLabel"
+        style="@style/details_activity"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:text="Title :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/posterimage" />
+
+    <TextView
+        android:id="@+id/title_value"
+        style="@style/details_activity"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toEndOf="@+id/titleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/posterimage" />
+
+    <TextView
+        android:id="@+id/overview_label"
+        style="@style/details_activity"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:text="OverView :"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
+
+    <TextView
+        android:id="@+id/overview_value"
+        style="@style/details_activity"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overview_label" />
+
+    <TextView
+        android:id="@+id/rating_label"
+        style="@style/details_activity"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:text="Vote Average"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/overview_value" />
+
+    <TextView
+        android:id="@+id/rating_value"
+        style="@style/details_activity"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toEndOf="@+id/rating_label"
+        app:layout_constraintTop_toBottomOf="@+id/overview_value" />
+
+    <TextView
+        android:id="@+id/releasedate_label"
+        style="@style/details_activity"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="25dp"
+        android:text="Release Date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rating_label" />
+
+    <TextView
+        android:id="@+id/releasedate_value"
+        style="@style/details_activity"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintStart_toEndOf="@+id/releasedate_label"
+        app:layout_constraintTop_toBottomOf="@+id/rating_value" />
+</androidx.constraintlayout.widget.ConstraintLayout>
