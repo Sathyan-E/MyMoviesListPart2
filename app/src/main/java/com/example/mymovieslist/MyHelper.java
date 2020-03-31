@@ -121,7 +121,7 @@ public class MyHelper {
                 String image=mainObject.optString(POSTERPATH_LABEL);
                 Log.i("parsing check","iamge url :"+image);
                 String title = mainObject.optString(TITLE_LABEL);
-                int rating=mainObject.optInt(RATING_LABEL);
+                double rating=mainObject.optInt(RATING_LABEL);
                 String overview =  mainObject.optString(OVERVIEW_LABEL);
                 String date=mainObject.optString(DATE_LABEL);
                 moviesList.add(new Movie(title,image,overview,rating,date));

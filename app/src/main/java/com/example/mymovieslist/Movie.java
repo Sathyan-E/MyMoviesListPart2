@@ -3,14 +3,14 @@ package com.example.mymovieslist;
 public class Movie {
     private String movieTitle;
     private String synopsis;
-    private int userRating;
+    private double userRating;
     private  String releaseDate;
     private String imageUrl;
 
     public Movie()
     {    }
 
-    public Movie(String title,String image,String overview,int rating,String release)
+    public Movie(String title,String image,String overview,double rating,String release)
     {
         movieTitle=title;
         imageUrl = image;
@@ -28,7 +28,7 @@ public class Movie {
         return synopsis;
     }
 
-    public int getUserRating() {
+    public double getUserRating() {
         return userRating;
     }
 
