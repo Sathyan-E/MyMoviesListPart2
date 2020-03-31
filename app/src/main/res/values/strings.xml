@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">MyMoviesList</string>
+    <string name="title_label">Title :</string>
+    <string name="overview_label">OverView :</string>
+    <string name="rating_label">Vote Average :</string>
+    <string name="release_label">Released Date :</string>
+    <string name="movie_details_lael">Movie Details</string>
+    <string name="popular_label">Most Popular Movies</string>
+    <string name="rated_label">Top Rated Movies</string>
+    <string name="api_key">9911d97e93c99a940a3fa35872d48420</string>
 
 </resources>

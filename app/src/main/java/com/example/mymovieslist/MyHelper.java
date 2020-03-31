@@ -18,16 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MyHelper {
-
+    //constants for parsing JSON response
     private final static String RESULTS_LABEL="results";
     private final static String POSTERPATH_LABEL="poster_path";
     private final static String TITLE_LABEL="title";
     private final static String RATING_LABEL="vote_average";
     private final static String OVERVIEW_LABEL="overview";
     private final static String DATE_LABEL="release_date";
+    //constructor
     public MyHelper(){}
-
-
+    //to request and parse the data from the api
     public static List<Movie> requestresponse(String link)
     {
         String jSONResponse="";
@@ -40,6 +40,7 @@ public class MyHelper {
         List<Movie> myMoviesList=parseResponse(jSONResponse);
         return myMoviesList;
     }
+    //to create URL object from String
     private static URL createUrl(String stringUrl)
     {
         URL url=null;
@@ -50,7 +51,7 @@ public class MyHelper {
         }
         return url;
     }
-
+    //to make a HttpRequest from the URL object
     private static String httpRequest(URL url) throws IOException
     {
         String response="";
@@ -91,7 +92,7 @@ public class MyHelper {
 
         return response;
     }
-
+    //to read the data from input stream got from the API
     private static String readFromJson(InputStream inputStream) throws IOException
     {
         StringBuilder stringBuilder = new StringBuilder();
@@ -109,6 +110,7 @@ public class MyHelper {
         }
         return stringBuilder.toString();
     }
+    //parse the response from the JSON response string
     public static List<Movie> parseResponse(String response)
     {
         List<Movie> moviesList = new ArrayList<Movie>();
@@ -118,18 +120,19 @@ public class MyHelper {
             for (int i=0;i<detailArray.length();i++)
             {
                 JSONObject mainObject = detailArray.getJSONObject(i);
+               //variable to store the movie attributers
                 String image=mainObject.optString(POSTERPATH_LABEL);
-                Log.i("parsing check","iamge url :"+image);
                 String title = mainObject.optString(TITLE_LABEL);
                 double rating=mainObject.optInt(RATING_LABEL);
                 String overview =  mainObject.optString(OVERVIEW_LABEL);
                 String date=mainObject.optString(DATE_LABEL);
+                //adding the movie object to the list
                 moviesList.add(new Movie(title,image,overview,rating,date));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.i("length check","length at helperclass"+moviesList.size());
+
         return moviesList;
     }
 }
