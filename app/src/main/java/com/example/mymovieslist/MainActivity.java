@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import java.util.List;
 
+import static com.example.mymovieslist.MyHelper.parseResponse;
 import static com.example.mymovieslist.MyHelper.requestresponse;
 
 public class MainActivity extends AppCompatActivity implements CustomAdapter.OnItemListener {
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnI
         //get the reference of recycler view
         recyclerView = findViewById(R.id.recyclerview);
         //set the grid layout manager with default veritcal orientation and 2 number of columns
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),2);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
 
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnI
                 Log.i("rating check","before passing"+currentMovie.getUserRating());
                 goDetails.putExtra("release",currentMovie.getReleaseDate());
                 goDetails.putExtra("image",currentMovie.getImageUrl());
+                goDetails.putExtra("id",currentMovie.getId());
+                Log.i("current id checking","at main method"+currentMovie.getId());
                 startActivity(goDetails);
             }
         };
@@ -72,8 +75,10 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnI
         protected List<Movie> doInBackground(String... strings) {
             String link = strings[0];
            //requesting api and parsing JSON response
+            String response =requestresponse(link);
 
-            return requestresponse(link);
+
+            return parseResponse(response);
         }
 
         @Override
@@ -103,6 +108,11 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnI
                 else if (id==R.id.most_popular)
                 {
                     new MyASynTask().execute(FEED_URL_POPULARMOVIES);
+                }
+                else if (id==R.id.my_favorite)
+                {
+                    Intent goFavorite = new Intent(MainActivity.this, FavoriteList.class);
+                    startActivity(goFavorite);
                 }
                 return true;
             }

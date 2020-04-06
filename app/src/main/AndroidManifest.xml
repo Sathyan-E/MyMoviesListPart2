@@ -11,8 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DetailsActivity"
-            android:label="@string/movie_details_lael"></activity>
+        <activity
+            android:name=".FavoriteList"
+            android:label="@string/my_favorite"/>
+        <activity
+            android:name=".DetailsActivity"
+            android:label="@string/movie_details_lael" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

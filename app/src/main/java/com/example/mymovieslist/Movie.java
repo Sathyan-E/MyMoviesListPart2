@@ -7,17 +7,19 @@ public class Movie {
     private double userRating;
     private  String releaseDate;
     private String imageUrl;
+    private int id;
     //constructor
     public Movie()
     {    }
     //constructor
-    public Movie(String title,String image,String overview,double rating,String release)
+    public Movie(int id,String title,String image,String overview,double rating,String release)
     {
         movieTitle=title;
         imageUrl = image;
         synopsis=overview;
         userRating=rating;
         releaseDate=release;
+        this.id=id;
     }
     //getter methods for all the attributes.
 
@@ -39,5 +41,9 @@ public class Movie {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public int getId() {
+        return id;
     }
 }
