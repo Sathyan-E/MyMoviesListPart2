@@ -44,8 +44,7 @@ public class FavoriteList extends AppCompatActivity implements FavoriteMovieAdap
 
         favoriteRecyclerview.setAdapter(myfavAdapter);
 
-        DividerItemDecoration  decoration= new DividerItemDecoration(getApplicationContext(),VERTICAL);
-        favoriteRecyclerview.addItemDecoration(decoration);
+
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
