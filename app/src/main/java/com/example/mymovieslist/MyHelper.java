@@ -128,8 +128,9 @@ public class MyHelper {
                 String date=mainObject.optString(DATE_LABEL);
                 //adding the movie object to the list
                 int id=mainObject.optInt(ID_LABEL);
+                boolean fav=false;
                 Log.i("id checking","at parsing fisr detail"+id);
-                moviesList.add(new Movie(id,title,image,overview,rating,date));
+                moviesList.add(new Movie(id,title,image,overview,rating,date,fav));
             }
         } catch (JSONException e) {
             e.printStackTrace();

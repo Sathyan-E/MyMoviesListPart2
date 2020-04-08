@@ -1,9 +1,16 @@
 package com.example.mymovieslist;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,18 +22,21 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.mymovieslist.Database.FavoriteMovieDao;
+import com.example.mymovieslist.Database.FavoriteMovieDatabase;
 import com.squareup.picasso.Picasso;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static com.example.mymovieslist.MyHelper.requestresponse;
 import static com.example.mymovieslist.MyHelper.trailerParseResponse;
 import static com.example.mymovieslist.MyHelper.userReviewResponseParsing;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity  {
     //global view variables
     TextView title,overview,vote,date;
-    ImageView posterImage;
+    ImageView posterImage,favoriteImageview;
 
     ListView trailerListView,reviewListView;
     TrailerAdapter trailerAdapter;
@@ -34,7 +44,15 @@ public class DetailsActivity extends AppCompatActivity {
     private final String MY_API_KEY="9911d97e93c99a940a3fa35872d48420";
     private  int movieID;
 
+    boolean isFavorite;
 
+    String movieTitle,movieSynopsis,imagePath,movieDate;
+    double movieRating;
+
+    Movie current;
+    //database instance variable
+    private FavoriteMovieDatabase myDatabase;
+    private FavoriteMovieDao myFavDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +63,64 @@ public class DetailsActivity extends AppCompatActivity {
         vote=(TextView)findViewById(R.id.rating_value);
         date=(TextView)findViewById(R.id.releasedate_value);
         posterImage=(ImageView)findViewById(R.id.posterimage);
+
+        //inializing database
+        myDatabase=FavoriteMovieDatabase.getInstance(getApplicationContext());
+
+
+        favoriteImageview = (ImageView)findViewById(R.id.favorite_imageview);
+
         //retrieving datas from intent
-        String movieTitle=getIntent().getExtras().getString("title");
+        movieTitle=getIntent().getExtras().getString("title");
         String movieSynopsis=getIntent().getExtras().getString("overview");
         String movieRating =getIntent().getExtras().getString("rating");
         String movieDate = getIntent().getExtras().getString("release");
         String imagePath=getIntent().getExtras().getString("image");
         movieID=getIntent().getExtras().getInt("id");
+        isFavorite=getIntent().getExtras().getBoolean("isfavorite");
         Log.i("parcelable id checking","At DetailsActovoty"+movieID);
+
+        //current = (Movie) getIntent().getSerializableExtra("movieObject");
+       /**
+        if(current!=null){
+
+            movieTitle = current.getMovieTitle();
+            String movieSynopsis=current.getSynopsis();
+            double movieRating=current.getUserRating();
+            String imagePath=current.getImageUrl();
+            String movieDate=current.getReleaseDate();
+            movieID=current.getId();
+            isFavorite=current.isFav();
+        }
+        **/
+
+        AppExecutors.getInstance().getDiskIo().execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Integer> idList =myDatabase.myFavoriteMovieDao().loadFavMoviesID();
+
+                for (int i=0;i<idList.size();i++)
+                {
+                    if (movieID == idList.get(i)){
+                        isFavorite=true;
+                        break;
+                    }
+                }
+                if (isFavorite==true)
+                {
+                    favoriteImageview.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                }
+                else
+                {
+                    favoriteImageview.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+                }
+
+            }
+        });
+
+
+
+
 
         //setting data into views.
         title.setText(movieTitle);
@@ -123,7 +191,55 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void favoriteClicked(View view) {
-        Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+
+        final Movie favMovie=new Movie(movieID,movieTitle);
+
+
+        /**
+        if (favMovie==null)
+        {
+            Toast.makeText(this, "current movie is null", Toast.LENGTH_SHORT).show();
+        }
+        else if (favMovie!=null)
+        {
+            myDatabase.myFavoriteMovieDao().insertFavMovie(favMovie);
+            finish();
+        }
+         ***/
+
+        if (isFavorite==true)
+        {
+
+            favoriteImageview.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
+            Toast.makeText(this, "Removed from  Favorites", Toast.LENGTH_SHORT).show();
+            AppExecutors.getInstance().getDiskIo().execute(new Runnable() {
+                @Override
+                public void run() {
+                    myDatabase.myFavoriteMovieDao().deleteFavMovie(favMovie);
+                }
+            });
+            isFavorite=false;
+
+        }
+        else {
+            favoriteImageview.setColorFilter(Color.RED,PorterDuff.Mode.SRC_IN);
+            Toast.makeText(this, "Added to Favorites", Toast.LENGTH_SHORT).show();
+            AppExecutors.getInstance().getDiskIo().execute(new Runnable() {
+                @Override
+                public void run() {
+                    myDatabase.myFavoriteMovieDao().insertFavMovie(favMovie);
+                }
+            });
+            isFavorite=true;
+
+        }
+
+
+        /**
+        Drawable  unwrappedDrawable = AppCompatResources.getDrawable(getApplicationContext(),R.drawable.ic_favorite_foreground);
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, Color.RED);
+        **/
     }
 
     public class TrailerAsycTask extends AsyncTask<String,Void, List<Trailer>>
@@ -165,5 +281,10 @@ public class DetailsActivity extends AppCompatActivity {
             reviewAdapter=new UserReviewAdapter(DetailsActivity.this,userReviews);
             reviewListView.setAdapter(reviewAdapter);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

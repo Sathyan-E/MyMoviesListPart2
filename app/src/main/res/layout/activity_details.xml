@@ -18,6 +18,15 @@
         app:layout_constraintTop_toBottomOf="@+id/title_value"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/favorite_imageview"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_favorite_foreground"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="favoriteClicked"
+        app:layout_constraintTop_toBottomOf="@+id/title_value" />
+
     <TextView
         android:id="@+id/title_value"
         android:layout_width="match_parent"
@@ -43,7 +52,7 @@
     <TextView
         android:id="@+id/overview_value"
         style="@style/details_value"
-        android:layout_width="wrap_content"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         app:layout_constraintStart_toEndOf="@+id/posterimage"
@@ -65,15 +74,6 @@
         app:layout_constraintStart_toEndOf="@+id/posterimage"
         app:layout_constraintTop_toBottomOf="@+id/rating_value" />
 
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="favoriteClicked"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title_value"
-        app:srcCompat="@android:drawable/btn_star" />
 
     <TextView
         android:id="@+id/trailer_label"
@@ -98,17 +98,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/trailer_listview" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="Releated Videos"
-        android:textSize="10sp"
-        android:textStyle="italic|bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/review_listview" />
-
     <ListView
         android:id="@+id/trailer_listview"
         android:layout_width="match_parent"
@@ -123,10 +112,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <ListView
-        android:id="@+id/related_video_listview"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

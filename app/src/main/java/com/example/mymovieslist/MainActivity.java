@@ -8,10 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import java.io.Serializable;
 import java.util.List;
 
 import static com.example.mymovieslist.MyHelper.parseResponse;
@@ -52,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnI
             public void onMovieClick(int position) {
                 Movie currentMovie = myList.get(position);
                 Intent goDetails = new Intent(MainActivity.this,DetailsActivity.class);
+
                 goDetails.putExtra("title",currentMovie.getMovieTitle());
                 goDetails.putExtra("overview",currentMovie.getSynopsis());
                 goDetails.putExtra("rating",String.valueOf(currentMovie.getUserRating()));
@@ -59,7 +63,10 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnI
                 goDetails.putExtra("release",currentMovie.getReleaseDate());
                 goDetails.putExtra("image",currentMovie.getImageUrl());
                 goDetails.putExtra("id",currentMovie.getId());
+                goDetails.putExtra("isfavorite",currentMovie.isFav());
                 Log.i("current id checking","at main method"+currentMovie.getId());
+
+               //goDetails.putExtra("movieObject", currentMovie);
                 startActivity(goDetails);
             }
         };
