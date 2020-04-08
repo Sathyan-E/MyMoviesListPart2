@@ -13,10 +13,12 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".FavoriteList"
-            android:label="@string/my_favorite"/>
+            android:label="@string/my_favorite"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".DetailsActivity"
-            android:label="@string/movie_details_lael" />
+            android:label="@string/movie_details_lael"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -17,14 +17,14 @@ public class TrailerAdapter extends ArrayAdapter<Trailer> {
 
     List<Trailer> myTrailerList = new ArrayList<Trailer>();
     Activity context;
-
+    //Constructor
     TrailerAdapter(Activity context, List<Trailer> trailerList)
     {
         super(context,0,trailerList);
         myTrailerList=trailerList;
         this.context=context;
     }
-
+    //method to get views
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

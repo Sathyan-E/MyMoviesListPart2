@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.mymovieslist.Database.FavoriteMovieDatabase;
@@ -22,7 +23,7 @@ import java.util.List;
 import static androidx.recyclerview.widget.DividerItemDecoration.VERTICAL;
 
 public class FavoriteList extends AppCompatActivity implements FavoriteMovieAdapter.favMovieClickListener {
-
+    //memeber variable declaration
    FavoriteMovieDatabase myDatabase;
    RecyclerView favoriteRecyclerview;
    FavoriteMovieAdapter myfavAdapter;
@@ -34,18 +35,18 @@ public class FavoriteList extends AppCompatActivity implements FavoriteMovieAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite_list);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        //binding recycler view
         favoriteRecyclerview=(RecyclerView) findViewById(R.id.fav_movie_recycler);
 
+
         favoriteRecyclerview.setLayoutManager(new LinearLayoutManager(this));
-
-        //favList= myDatabase.myFavoriteMovieDao().loadAllFavoriteMovies();
-
+        //initialiazation of adapter
         myfavAdapter=new FavoriteMovieAdapter(this,this);
-
+        //setting adapter to the recycler view
         favoriteRecyclerview.setAdapter(myfavAdapter);
-
-
-
+        //mmethod to control the swipping action
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -67,8 +68,7 @@ public class FavoriteList extends AppCompatActivity implements FavoriteMovieAdap
             }
         }).attachToRecyclerView(favoriteRecyclerview);
 
-
-
+        //initialization of database
         myDatabase=FavoriteMovieDatabase.getInstance(getApplicationContext());
         retrieveFavMovieList();
 
@@ -82,7 +82,7 @@ public class FavoriteList extends AppCompatActivity implements FavoriteMovieAdap
     }
 
     private void retrieveFavMovieList() {
-
+        //livedata observe the changes in databse
         final LiveData<List<Movie>> list=myDatabase.myFavoriteMovieDao().loadAllFavoriteMovies();
         list.observe(this, new Observer<List<Movie>>() {
             @Override

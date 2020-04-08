@@ -43,7 +43,7 @@ public class Movie implements Serializable {
         this.movieTitle=movieTitle;
         this.id=id;
     }
-
+    //Setter and Getter methods for all member viariables
     public String getMovieTitle() {
         return movieTitle;
     }
@@ -99,7 +99,5 @@ public class Movie implements Serializable {
     public void setFav(boolean fav) {
         this.fav = fav;
     }
-    //getter methods for all the attributes.
-
 
 }

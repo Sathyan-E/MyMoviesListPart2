@@ -138,7 +138,7 @@ public class MyHelper {
 
         return moviesList;
     }
-
+    //Parsing the response fr TrailerList
     public static List<Trailer> trailerParseResponse(String response)
     {
         List<Trailer> trailerList = new ArrayList<Trailer>();
@@ -151,15 +151,12 @@ public class MyHelper {
             {
                 JSONObject mainObject =  resultsArray.getJSONObject(i);
                 String type= mainObject.optString("type");
+                //Storing dateils in the variables
+                String key=mainObject.optString("key");
+                String name =mainObject.optString("name");
+                //Adding the new trailer object to the list
+                trailerList.add(new Trailer(name,key));
 
-                if (type.equals("Trailer"));
-                {
-                    String key=mainObject.optString("key");
-                    String name =mainObject.optString("name");
-                    Log.i("attributes check","At helper parwsing method :"+name+" "+key);
-                    trailerList.add(new Trailer(name,key));
-                    Log.i("trailer list checking","At MyHelper method"+trailerList.size());
-                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -167,7 +164,7 @@ public class MyHelper {
 
         return trailerList;
     }
-
+    //parsing the Jsonresponse for UserReview
     public static List<UserReview> userReviewResponseParsing(String reponse)
     {
         List<UserReview> reviewList = new ArrayList<UserReview>();

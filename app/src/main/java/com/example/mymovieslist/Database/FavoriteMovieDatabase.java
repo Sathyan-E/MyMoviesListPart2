@@ -10,32 +10,32 @@ import androidx.room.RoomDatabase;
 import com.example.mymovieslist.Movie;
 
 
-    @Database(entities = {Movie.class},version = 1,exportSchema = false)
-    public abstract class FavoriteMovieDatabase extends RoomDatabase {
-        private static final String LOG_TAG=FavoriteMovieDatabase.class.getSimpleName();
-        private static final Object LOCK = new Object();
-        private static final String DATABASE_NAME="MoviesList";
-        private static FavoriteMovieDatabase sInstance;
+@Database(entities = {Movie.class},version = 1,exportSchema = false)
+public abstract class FavoriteMovieDatabase extends RoomDatabase {
+    private static final String LOG_TAG=FavoriteMovieDatabase.class.getSimpleName();
+    private static final Object LOCK = new Object();
+    private static final String DATABASE_NAME="MoviesList";
+    private static FavoriteMovieDatabase sInstance;
 
-        public static FavoriteMovieDatabase getInstance(Context context)
+    public static FavoriteMovieDatabase getInstance(Context context)
+    {
+        if (sInstance == null)
         {
-            if (sInstance == null)
+            synchronized (LOCK)
             {
-                synchronized (LOCK)
-                {
-                    Log.d(LOG_TAG,"Creating new Database Insatance");
-                    sInstance= Room.databaseBuilder(context.getApplicationContext(),FavoriteMovieDatabase.class,
-                            FavoriteMovieDatabase.DATABASE_NAME)
-                            .allowMainThreadQueries()
-                            .build();
-                }
-            }
+                Log.d(LOG_TAG,"Creating new Database Insatance");
+                sInstance= Room.databaseBuilder(context.getApplicationContext(),FavoriteMovieDatabase.class,
+                        FavoriteMovieDatabase.DATABASE_NAME)
 
-            Log.d(LOG_TAG,"Getting the database instance");
-            return sInstance;
+                        .build();
+            }
         }
-        //Deviation - removed absratc key word due to error
-        public abstract FavoriteMovieDao myFavoriteMovieDao();
+
+        Log.d(LOG_TAG,"Getting the database instance");
+        return sInstance;
     }
+
+    public abstract FavoriteMovieDao myFavoriteMovieDao();
+}
 
 

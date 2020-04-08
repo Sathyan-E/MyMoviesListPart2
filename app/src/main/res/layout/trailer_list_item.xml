@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal"
@@ -11,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
-        android:text="Trailer 1"
+        android:text="@string/trailer1"
         android:textSize="10sp"/>
 
     <ImageView
@@ -19,7 +20,7 @@
         android:layout_width="0dp"
         android:layout_height="18dp"
         android:layout_weight="1"
-        android:contentDescription="Click to play the Trailer"
-        android:src="@drawable/ic_play_foreground" />
+        android:src="@drawable/ic_play_foreground"
+        tools:ignore="ContentDescription" />
 
 </LinearLayout>

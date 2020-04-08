@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements CustomAdapter.OnI
             public void onMovieClick(int position) {
                 Movie currentMovie = myList.get(position);
                 Intent goDetails = new Intent(MainActivity.this,DetailsActivity.class);
-
+                //sending the data to next activity
                 goDetails.putExtra("title",currentMovie.getMovieTitle());
                 goDetails.putExtra("overview",currentMovie.getSynopsis());
                 goDetails.putExtra("rating",String.valueOf(currentMovie.getUserRating()));

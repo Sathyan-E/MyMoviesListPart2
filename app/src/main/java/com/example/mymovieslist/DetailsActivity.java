@@ -57,6 +57,8 @@ public class DetailsActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //binding methods
         title=(TextView)findViewById(R.id.title_value);
         overview=(TextView)findViewById(R.id.overview_value);
@@ -80,20 +82,7 @@ public class DetailsActivity extends AppCompatActivity  {
         isFavorite=getIntent().getExtras().getBoolean("isfavorite");
         Log.i("parcelable id checking","At DetailsActovoty"+movieID);
 
-        //current = (Movie) getIntent().getSerializableExtra("movieObject");
-       /**
-        if(current!=null){
-
-            movieTitle = current.getMovieTitle();
-            String movieSynopsis=current.getSynopsis();
-            double movieRating=current.getUserRating();
-            String imagePath=current.getImageUrl();
-            String movieDate=current.getReleaseDate();
-            movieID=current.getId();
-            isFavorite=current.isFav();
-        }
-        **/
-
+        //AppExecutor for gettinng info from the databae
         AppExecutors.getInstance().getDiskIo().execute(new Runnable() {
             @Override
             public void run() {
@@ -118,25 +107,24 @@ public class DetailsActivity extends AppCompatActivity  {
             }
         });
 
-
-
-
-
         //setting data into views.
         title.setText(movieTitle);
         overview.setText(movieSynopsis);
         vote.setText(movieRating+"/10");
         date.setText(movieDate);
+
         //base url for getting image
         String baseUrl= "http://image.tmdb.org/t/p/w185";
         String urlstring =baseUrl+imagePath;
         Log.i("url checking","at bindview"+urlstring);
+
         //setting image through Picasso library on Imageview
         Picasso.get().load(urlstring).into(posterImage);
 
-        //lsit view binding
+        //list view binding
         trailerListView=(ListView)findViewById(R.id.trailer_listview);
         trailerListView.setAdapter(trailerAdapter);
+        //setting onCLickListener to trailerview
         trailerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -148,6 +136,7 @@ public class DetailsActivity extends AppCompatActivity  {
                     Toast.makeText(DetailsActivity.this, "Item clicked"+key, Toast.LENGTH_SHORT).show();
                     String weblink="https://wwww.youtube.com/watch?v="+key;
                     Log.i("youtube checking","At intent"+weblink);
+                    //implicit Intent to play the video in youtube
                     Intent goYouTube = new Intent(Intent.ACTION_VIEW,Uri.parse("https://www.youtube.com/watch?v="+key));
                     try {
                         DetailsActivity.this.startActivity(goYouTube);
@@ -156,15 +145,13 @@ public class DetailsActivity extends AppCompatActivity  {
                         e.printStackTrace();
                     }
 
-                    //startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://wwww.youtube.com/watch?v="+key)));
                 }
-
-
             }
         });
-
+        //user review List View binding
         reviewListView=(ListView)findViewById(R.id.review_listview);
         reviewListView.setAdapter(reviewAdapter);
+        //setting onclickListener foor reviewlistview
         reviewListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -173,6 +160,7 @@ public class DetailsActivity extends AppCompatActivity  {
                 {
                     String reviewUrl=currentReview.getUrl();
                     Toast.makeText(DetailsActivity.this, "review clicked", Toast.LENGTH_SHORT).show();
+                    //implicit intent for open teh review in browser
                     Intent goReview= new Intent(Intent.ACTION_VIEW,Uri.parse(reviewUrl));
                     try {
                         DetailsActivity.this.startActivity(goReview);
@@ -184,32 +172,17 @@ public class DetailsActivity extends AppCompatActivity  {
         });
 
         String  TRAILER_LINK ="https://api.themoviedb.org/3/movie/"+movieID+"/videos?api_key="+MY_API_KEY;
-         String REVIEW_LINK ="https://api.themoviedb.org/3/movie/"+movieID+"/reviews?api_key="+MY_API_KEY;
-
+        String REVIEW_LINK ="https://api.themoviedb.org/3/movie/"+movieID+"/reviews?api_key="+MY_API_KEY;
+        //initializing async tasks
         new TrailerAsycTask().execute(TRAILER_LINK);
         new UserReviewAsyncTask().execute(REVIEW_LINK);
     }
 
     public void favoriteClicked(View view) {
-
         final Movie favMovie=new Movie(movieID,movieTitle);
-
-
-        /**
-        if (favMovie==null)
-        {
-            Toast.makeText(this, "current movie is null", Toast.LENGTH_SHORT).show();
-        }
-        else if (favMovie!=null)
-        {
-            myDatabase.myFavoriteMovieDao().insertFavMovie(favMovie);
-            finish();
-        }
-         ***/
 
         if (isFavorite==true)
         {
-
             favoriteImageview.setColorFilter(Color.GRAY, PorterDuff.Mode.SRC_IN);
             Toast.makeText(this, "Removed from  Favorites", Toast.LENGTH_SHORT).show();
             AppExecutors.getInstance().getDiskIo().execute(new Runnable() {
@@ -219,7 +192,6 @@ public class DetailsActivity extends AppCompatActivity  {
                 }
             });
             isFavorite=false;
-
         }
         else {
             favoriteImageview.setColorFilter(Color.RED,PorterDuff.Mode.SRC_IN);
@@ -231,15 +203,7 @@ public class DetailsActivity extends AppCompatActivity  {
                 }
             });
             isFavorite=true;
-
         }
-
-
-        /**
-        Drawable  unwrappedDrawable = AppCompatResources.getDrawable(getApplicationContext(),R.drawable.ic_favorite_foreground);
-        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
-        DrawableCompat.setTint(wrappedDrawable, Color.RED);
-        **/
     }
 
     public class TrailerAsycTask extends AsyncTask<String,Void, List<Trailer>>
@@ -250,6 +214,7 @@ public class DetailsActivity extends AppCompatActivity  {
 
             String jSOnResponse="";
             String link=strings[0];
+            //parsing the JSON data got form the api
             jSOnResponse=requestresponse(link);
             Log.i("REsponse CHeck","At details Activity"+jSOnResponse);
             return trailerParseResponse(jSOnResponse);
@@ -259,6 +224,7 @@ public class DetailsActivity extends AppCompatActivity  {
         protected void onPostExecute(List<Trailer> trailerList) {
             super.onPostExecute(trailerList);
             Log.i("tlist size checking","At OnPostExcute method"+trailerList.size());
+           //initialization of tralier Adapter
             trailerAdapter= new TrailerAdapter(DetailsActivity.this,trailerList);
             trailerListView.setAdapter(trailerAdapter);
         }
@@ -271,6 +237,7 @@ public class DetailsActivity extends AppCompatActivity  {
         protected List<UserReview> doInBackground(String... strings) {
             String jsonResponse="";
             String reviewurl=strings[0];
+            //parsing the data got from the api
             jsonResponse=requestresponse(reviewurl);
             return userReviewResponseParsing(jsonResponse);
         }
@@ -278,6 +245,7 @@ public class DetailsActivity extends AppCompatActivity  {
         @Override
         protected void onPostExecute(List<UserReview> userReviews) {
             super.onPostExecute(userReviews);
+            //initialization of adapter
             reviewAdapter=new UserReviewAdapter(DetailsActivity.this,userReviews);
             reviewListView.setAdapter(reviewAdapter);
         }

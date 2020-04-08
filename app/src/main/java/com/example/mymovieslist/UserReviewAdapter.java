@@ -15,14 +15,14 @@ import java.util.List;
 public class UserReviewAdapter extends ArrayAdapter<UserReview> {
     Activity context;
     List<UserReview> reviewList;
-
+    //Constructor
     public UserReviewAdapter(Activity context, List<UserReview> reviews)
     {
         super(context,0,reviews);
         this.context=context;
         this.reviewList=reviews;
     }
-
+    //method for inflating the view
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

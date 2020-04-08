@@ -53,10 +53,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     public int getItemCount() {
        if (myList==null)
        {
-
            return 0;
        }
        else {
+           //returning item count
            return myList.size();
        }
     }

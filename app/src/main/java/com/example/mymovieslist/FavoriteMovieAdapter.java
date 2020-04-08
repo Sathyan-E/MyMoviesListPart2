@@ -16,19 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.TaskViewHolder> {
-
+    //Declaring member Variables
    private Context mcontext;
    private List<Movie> favMovieList;
    final private favMovieClickListener mymovieClickListner;
 
-
+    //Constructor
    public FavoriteMovieAdapter(Context  context,favMovieClickListener mymovieClickListner)
    {
        this.mcontext=context;
        this.mymovieClickListner=mymovieClickListner;
    }
 
-
+    //Creating the viewHolder
    @NonNull
     @Override
     public TaskViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,8 +37,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         return new TaskViewHolder(view);
     }
 
-
-
+    //Binding VIew Holder
     @Override
     public void  onBindViewHolder(TaskViewHolder holder,int postion)
     {
@@ -55,7 +54,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
             holder.favoritemovie.setText("NO movies");
         }
     }
-
+    //Getting the itemCount
     @Override
     public int getItemCount() {
         if (favMovieList==null)
@@ -64,23 +63,22 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
         }
         return favMovieList.size();
     }
-
+    //Getter method to provide the list
     public List<Movie>  getFavMovieList(){
        return favMovieList;
     }
-
+    //setting the list to movieList
     public void setTasks(List<Movie> movielist)
     {
         favMovieList=movielist;
         notifyDataSetChanged();
     }
-
+    //click listener
    public interface favMovieClickListener{
        void onMovieClickListener(int itemId);
    }
 
-
-
+   //Inner class
    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
       TextView favoritemovie;
